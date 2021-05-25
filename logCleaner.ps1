@@ -12,7 +12,7 @@ $dayToDelete = "-60"
 # Known Error: 
     # Send-MailMessage : The SMTP server requires a secure connection 
     # or the client was not authenticated. The server response was: 5.7.0 Authentication Required
-# Its require valid SMTP settings - Google Not allowing unsecure client to send emails
+# Its require valid SMTP settings - Google is not allowing unsecure client to send emails
  
 $User = "dan.alphonza@gmail.com"
 $Password = 'HAHAHA!@#'
@@ -28,16 +28,16 @@ $Cred = New-Object System.Management.Automation.PSCredential ($User, $SecurePass
 
 # Get list of logs file to move and Delete
 function ListItemsAndMoveAndDelete {
-    # Check folder exits
+    # Check folder exists
     if(!(test-path $logPath)){
-        # if not exits 
+        # if does not exists 
         $errorMessage = "Invalid Log Path - LogPath not exists " + $logPath
         Write-Error $errorMessage
     } else {
 
-        # Check Target folder exits
+        # Check Target folder exists
         if(!(test-path $targetPath)){
-            # if not exits | Create folder $targetPath
+            # if does not exists | Create folder $targetPath
             $CreateTargetPath = New-item -ItemType Directory -Path $targetPath
         }
 
@@ -45,9 +45,9 @@ function ListItemsAndMoveAndDelete {
         $csvMovedFiles = $targetPath + "\moved_" + $folderName + ".csv"
         $csvDeletedFiles = $targetPath + "\deleted_" + $folderName + ".csv"
         
-        # Check CSV files exits | and If exist - Remove
+        # Check CSV files exists | and If exists - Remove
         if((test-path $csvMovedFiles)){
-            # if not exits | Create folder $targetPath
+            # if does not exists | Create folder $targetPath
             Remove-Item $csvMovedFiles
             Remove-Item $csvDeletedFiles
         }
@@ -57,7 +57,7 @@ function ListItemsAndMoveAndDelete {
         # Create New csv file to create report | Deleted items
         $CreateCsvDeletedFiles = New-Item $csvDeletedFiles -ItemType File
 
-        # Move Items if they are than older 30 Days
+        # Move Items if they are older than 30 Days
         # Loop through Child | Filter by Day (-30) | Move
         # Filter log path with 30 days to move
         $getMoveItems =  Get-ChildItem -Path $logPath | 
@@ -75,7 +75,7 @@ function ListItemsAndMoveAndDelete {
                 Directroy = $moveItem.FullName
             }
         }
-        # Add object of data to csv to prepare for email attachedment
+        # Add object of data to csv to prepare for an email attachment
         $MovedObjects | Export-Csv $csvMovedFiles
 
 
@@ -97,7 +97,7 @@ function ListItemsAndMoveAndDelete {
                 Directroy = $DeleteItem.FullName
             }
         }
-        # Add object of data to csv to prepare for email attachedment
+        # Add object of data to csv to prepare for an email attachment
         $DeleteObjects | Export-Csv $csvDeletedFiles
       
         # Email Report - Contents
