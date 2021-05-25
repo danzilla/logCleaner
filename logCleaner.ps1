@@ -2,8 +2,8 @@
 # Variables
 $serverName = hostname
 $folderName = $serverName + "_ISSLogFiles"
-$logPath = $HOME + "\Documents\TestFolder"
-$targetPath = "D:\Archive\" + $folderName  + '\'
+$logPath = "%SystemDrive%\inetpub\logs\LogFiles"
+$targetPath = "E:\Archive\" + $folderName  + '\'
 $dayToMove = "-30"
 $dayToDelete = "-60"
 
